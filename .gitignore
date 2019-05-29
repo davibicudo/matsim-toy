@@ -1,0 +1,11 @@
+/.project/
+__pycache__/
+/**/__pycache__/
+/**/**/__pycache__/
+/**/**/**/__pycache__/
+/pipeline_*/
+.pydevproject
+.DS_Store
+Java/.project
+R/.DS_Store
+.Rproj.user

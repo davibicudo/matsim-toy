@@ -1,0 +1,66 @@
+target_path: pipeline_cache
+disable_progress_bar: false
+java_memory: 8G
+
+city_name: luzern
+country_name: switzerland
+threads: 8
+sample_size: 0.1
+
+stages:
+    - population.utils.get_osm
+    - population.utils.get_city_pop
+    - population.utils.get_country_demographics
+    - population.utils.get_unemployment_rate
+    - population.utils.get_projection_name
+    - population.prepare_osm
+    - population.estimate_heights:
+        k: 10                                          # k hyperparameter for kNN
+        floor_height: 3.5                              # for estimating building heights
+    - population.classify_buildings
+        max_resid_building_area: 3.5                   # for residential building classification
+        min_usable_building_area: 3.5                  
+        residential_share_mixed_buildings: 0.5         
+    - population.estimate_residents_workplaces:
+        total_pop: NULL                                # in case manual input is desired
+        unemployment_rate: NULL                        
+        demographics_path: NULL                        
+        raster_cell_size: 50                           # level of detail in estimation
+        bus_stop_accessibility_buffer: 300             # bus accessibility range
+        train_station_accessibility_buffer: 500        # train accessibility range 
+        other_stops_accessibility_buffer: 400          # other pt accessibility range
+        train_station_accessibility_factor: 2          # factor of train accessibility in comparison to bus and other pt
+        min_worker_age: 18                             # for calculating total employed pop           
+        max_worker_age: 65                             
+    - population.create_synth_pop:
+        total_pop: NULL                                # in case manual input is desired
+        unemployment_rate: NULL                        
+        demographics_path: NULL                        
+        min_worker_age: 18                             
+        max_worker_age: 65                             
+        min_student_age: 5             
+        min_driver_age: 18        
+        max_driver_age: 85        
+	    car_avail_rate: 0.65                           # share of people in driving age that has a car available
+    - population.calc_travel_times
+    - population.assign_act_locations:
+        sAct_share: 0.5                                # share of workers and students that has a secondary activity
+    - population.assign_trip_chains:                   # arguments in seconds
+        work_start_mean_s: 30600                       # 8h30 
+        work_start_std_s: 1800                         # 30min
+        work_dur_mean_s: 28800                         # 8h
+        work_dur_std_s: 5400                           # 1h30
+        school_start_s: 28800                          # 8h
+        school_dur_s: 21600                            # 6h
+    - matsim.population
+    - matsim.java.add_timetable_compile
+    - matsim.java.pt2matsim
+    - matsim.network.convert_osm
+    - matsim.network.convert_osm_pt
+    - matsim.network.mapped
+    - matsim.network.add_timetable:
+        timetable_route_delay_factor: 1.5              # time factor to multiply freeflow travel times between stops
+        timetable_modes: bus,train,tram,trolleybus,light_rail      # modes to which a frequency is defined
+        timetable_frequencies: 15,30,10,10,15          # frequency (in minutes) of the service for the modes above
+    - matsim.network.plausibility
+    - matsim.run

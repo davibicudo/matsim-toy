@@ -1,0 +1,11 @@
+target_path: pipeline_cache
+disable_progress_bar: false
+java_memory: 8G
+
+city_name: luzern
+country_name: switzerland
+threads: 8
+sample_size: 0.1
+
+stages:
+    - matsim.run

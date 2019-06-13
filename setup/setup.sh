@@ -53,10 +53,10 @@ r
 r-httr=1.4
 r-rcpp=1.0.1
 r-rvest=0.3.4
-r-tibble=2.2.1
+r-tibble
 r-digest=0.6.19
 r-igraph=1.2.4
-r-rcppparallel=4.4.3
+r-rcppparallel
 r-rgdal
 r-rgeos
 r-osmar
@@ -237,6 +237,8 @@ else
     Rscript -e "devtools::install_version('osmdata', version = '0.1.1', lib='${R_LIB_PATH}', repos='https://cran.rstudio.org')"
     Rscript -e "devtools::install_version('dodgr', version = '0.1.3', lib='${R_LIB_PATH}', repos='https://cran.rstudio.org')"
     #Rscript -e "install.packages(c(${r_requirements_cran}), lib='${R_LIB_PATH}', repos='https://cran.rstudio.org')"
+	
+	conda deactivate
 	
     touch r_installed
 fi

@@ -13,10 +13,11 @@ Alternatively, a manual installation is also possible. If the required software 
 ## Quick start
 
 1. Download (or clone) the GitHub repository.
-2. Run source setup/setup.sh env_dir java,maven,conda 
-3. Run source setup/activate.sh env_dir (tests and activates the conda environment).
-4. Edit the config.yml file (optional, otherwise will build and run a small example)
-5. Run python run.py
+2. Run `source setup/setup.sh env_dir java,maven,conda`
+3. Run `source setup/activate.sh env_dir` (tests and activates the conda environment).
+4. Run `python run.py city_name country_name sample_size`
+
+This will produce a MATSim toy model for *city_name* (part of *country_name*) with size population * *sample_size* and run it for 100 iterations, all with default configuration. Default model creation configuration can be seen in the file `config.yml` and the default MATSim simulation configuration can be seen in `matsim/config.xml`.
 
 If none of the required software or libraries were available, installing can take several minutes, depending on the speed of the internet connection. 
 

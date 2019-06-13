@@ -5,6 +5,7 @@ def configure(context, require):
     require.stage("utils.java")
     require.stage("matsim.network.convert_osm")
     require.stage("matsim.network.convert_osm_pt")
+    require.config("threads", 8)
 
 def execute(context):
     jar = context.stage("matsim.java.pt2matsim")

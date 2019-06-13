@@ -3,26 +3,17 @@ import pipeline
 import yaml
 import sys
 
-config_path = "config.yml"
-city_name = None
-print(sys.argv)
-if len(sys.argv) == 2:
-    config_path == sys.argv[1]
+if len(sys.argv) == 1:
+    with open('config.yml') as f:
+	    config = yaml.load(f)
+elif len(sys.argv) == 2:
+	with open(sys.argv[1]) as f:
+	    config = yaml.load(f)
 elif len(sys.argv) == 4:
-	city_name = sys.argv[1]
-	country_name = sys.argv[2]
-	sample_size  = sys.argv[3]
+	config = {"city_name": sys.argv[1], "country_name": sys.argv[2], "sample_size": sys.argv[3], 
+			  "target_path": "pipeline_cache", "stages":["matsim.run"]}
 elif len(sys.argv) != 1:
-	raise RuntimeError("Wrong number of arguments")
-
-with open(config_path) as f:
-    config = yaml.load(f)
-
-# adapt location names
-if city_name is not None:
-	config["city_name"] = city_name
-	config["country_name"] = country_name
-	config["sample_size"] = sample_size
+	raise RuntimeError("Wrong number of arguments. Please supply either config file path or <city_name> <country_name> <sample_size>.")
 
 if "disable_progress_bar" in config and config["disable_progress_bar"]:
     tqdm.tqdm = pipeline.safe_tqdm

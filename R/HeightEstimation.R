@@ -28,9 +28,9 @@ estimate_heights <- function(buildings_path, floor_height=3.5, k=10) {
   train_predict <- buildings_sp[is.na(buildings_sp$height),c("centroid_x", "centroid_y", "area", "perimeter")]@data
   heights <- buildings_sp[!is.na(buildings_sp$height),"height"]@data[,1]
   # run KNN to check R-squared first and then get predictions
-  knn_cv <- knn.reg(train=train, y=heights, k=k)
+  knn_cv <- knn.reg(train=train, y=heights, k=min(c(k, nrow(train)-1)))
   print(knn_cv)
-  knn <- knn.reg(train=train, test=train_predict, y=heights, k=k)
+  knn <- knn.reg(train=train, test=train_predict, y=heights, k=min(c(k, nrow(train))))
   
   buildings_sp[is.na(buildings_sp$height),"height"] <- knn$pred
   

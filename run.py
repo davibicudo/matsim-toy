@@ -9,9 +9,9 @@ if len(sys.argv) == 1:
 elif len(sys.argv) == 2:
 	with open(sys.argv[1]) as f:
 	    config = yaml.load(f)
-elif len(sys.argv) == 4:
+elif len(sys.argv) == 5:
 	config = {"city_name": sys.argv[1], "country_name": sys.argv[2], "sample_size": sys.argv[3], 
-			  "target_path": "pipeline_cache", "stages":["matsim.run"]}
+			  "target_path": sys.argv[4], "stages":["matsim.run"]}
 elif len(sys.argv) != 1:
 	raise RuntimeError("Wrong number of arguments. Please supply either config file path or <city_name> <country_name> <sample_size>.")
 

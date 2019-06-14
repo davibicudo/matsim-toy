@@ -1,6 +1,6 @@
 # Estimation of inhabitants and workplaces per OSM building
 
-prepare_osm_data <- function(osm_path, city_name, country_name,
+prepare_osm_data <- function(osm_path, city_name, country_name, sample_size=1.0,
                              ktable_path="../resources/POIs_Kunze.csv") {
   
   # print variables used in function
@@ -18,8 +18,9 @@ prepare_osm_data <- function(osm_path, city_name, country_name,
   ktable <- read.csv2(ktable_path, stringsAsFactors = F)
   
   ### prepare Buildings ###
-  # get buildings from OSM and respective nodes
+  # get buildings from OSM and respective nodes. Sample buildings.
   bd_ids <- find(ua, way(tags(k %agrep% "building")))
+  bd_ids <- sample(bd_ids, sample_size*length(bd_ids))
   bd_ids <- find_down(ua, way(bd_ids))
   bd <- subset(ua, ids = bd_ids)
   
@@ -27,10 +28,16 @@ prepare_osm_data <- function(osm_path, city_name, country_name,
   borders <- getbb(place_name=paste(city_name, country_name, sep=","), format_out="sf_polygon", limit=1, featuretype="city")
   nodes <- bd$nodes$attrs[, c("id","lat","lon")]
   nodes <- st_as_sf(nodes, coords=c("lon","lat"), crs="+proj=longlat +datum=WGS84")
-  nodes <- st_intersection(nodes, borders)
-  bd_ids <- find_up(ua, node(nodes$id))
-  bd_ids <- find_down(ua, way(bd_ids$way_ids))
-  bd <- subset(ua, ids = bd_ids)
+  nodes_i <- st_intersection(nodes, borders)
+  if (nrow(nodes_i)==0) {
+    message(paste0("Border found for ", city_name, ", ", country_name, " does not overlap with OSM data. 
+                   Original bounding box shall be kept and this might lead to city population and 
+                   workplaces being distributed outside the city's borders."))
+  } else {
+    bd_ids <- find_up(ua, node(nodes$id))
+    bd_ids <- find_down(ua, way(bd_ids$way_ids))
+    bd <- subset(ua, ids = bd_ids)
+  }
   
   # include osm relevant tags
   buildings <- subset(bd$ways$tags, k %in% c("building","amenity","shop"))
@@ -132,12 +139,13 @@ option_list <- list(
   make_option("--osm_path"),
   make_option("--city_name"),
   make_option("--country_name"),
+  make_option("--sample_size", default = 1.0),
   make_option("--ktable_path")
 )
 
 opt <- parse_args(OptionParser(option_list=option_list))
 
 prepare_osm_data(
-  opt$osm_path, opt$city_name, opt$country_name, opt$ktable_path)
+  opt$osm_path, opt$city_name, opt$country_name, opt$sample_size, opt$ktable_path)
 
   

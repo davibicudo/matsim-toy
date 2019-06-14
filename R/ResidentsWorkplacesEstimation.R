@@ -44,9 +44,6 @@ estimate_residents_workplaces <- function(buildings_path, pt_stops_path,
   # load buildings dataset
   buildings_sp <- readOGR(dsn=buildings_path, "buildings")
   
-  # apply sample size to buildings (reduce number of buildings to simplify future matrix calc)
-  buildings_sp <- buildings_sp[sample.int(nrow(buildings_sp), nrow(buildings_sp)*sample_size),]
-  
   # load PT stops
   pt_sp <- readOGR(dsn=pt_stops_path, "stops")
   

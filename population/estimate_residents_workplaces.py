@@ -15,7 +15,8 @@ def execute(context):
     args = ["--buildings_path="+context.stage("population.classify_buildings")[0],
             "--pt_stops_path="+context.stage("population.prepare_osm")[3],
             "--city_name='"+context.config["city_name"]+"'", 
-            "--country_name='"+context.config["country_name"]+"'"]
+            "--country_name='"+context.config["country_name"]+"'",
+            "--sample_size="+str(context.config["sample_size"])]
     
     args_dict = context.args(__loader__.name)
     if "total_pop" not in args_dict:
@@ -24,8 +25,6 @@ def execute(context):
         args += ["--unemployment_rate="+str(context.stage("population.utils.get_unemployment_rate"))]
     if "demographics_path" not in args_dict:
         args += ["--demographics_path="+str(context.stage("population.utils.get_country_demographics"))]
-        
-    args += ["--sample_size="+str(context.config["sample_size"])]
     
     for k,v in args_dict.items():
         args += ['--'+str(k)+'='+str(v)]

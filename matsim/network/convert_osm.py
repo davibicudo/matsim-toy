@@ -3,7 +3,7 @@ import os.path
 def configure(context, require):
     require.stage("matsim.java.pt2matsim")
     require.stage("utils.java")
-    require.stage("population.utils.get_osm")
+    require.stage("population.utils.get_osm", "osm_path")
     require.stage("population.utils.get_projection_name")
 
 
@@ -21,7 +21,7 @@ def execute(context):
 
     content = content.replace(
         '<param name="osmFile" value="null" />',
-        '<param name="osmFile" value="%s" />' % context.stage("population.utils.get_osm")
+        '<param name="osmFile" value="%s" />' % context.stage("population.utils.get_osm", "osm_path"),
     )
     content = content.replace(
         '<param name="outputCoordinateSystem" value="null" />',

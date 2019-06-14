@@ -54,7 +54,8 @@ class safe_tqdm:
         self._print()
 
 class Require:
-    def __init__(self):
+    def __init__(self, config = None):
+        self.config_keys = self.flatten_keys(config)
         self.config_defaults = {}
         self.config_names = list()
         self.stage_names = list()
@@ -66,8 +67,19 @@ class Require:
         if default is not None:
             self.config_defaults[name] = default
 
-    def stage(self, name):
+    def stage(self, name, config_alternative = None):
+        if config_alternative in self.config_keys:
+            return
         self.stage_names.append(name)
+
+    @staticmethod
+    def flatten_keys(config):
+        keys = list(config.keys())
+        for stage in config['stages']:
+            if isinstance(stage, dict):
+                for arg in stage.values():
+                    keys += list(arg.keys())
+        return keys
 
 class Context:
     def __init__(self, target_path, config):
@@ -89,7 +101,9 @@ class Context:
             with open(self.stage_path(name), "wb+") as f:
                 pickle.dump(data, f)
 
-    def stage(self, name):
+    def stage(self, name, config_alternative = None):
+        if config_alternative is not None:
+            return self.config[config_alternative]
         if not name in self.stages:
             with open(self.stage_path(name), "rb") as f:
                 self.stages[name] = pickle.load(f)
@@ -168,7 +182,7 @@ def run(requested_stages, target_path = "target", config = {}):
         del stage_names[0]
         
         if not stage_name in stages:
-            require = Require()
+            require = Require(config)
 
             stage = importlib.import_module(stage_name)
             stage.configure(None, require)

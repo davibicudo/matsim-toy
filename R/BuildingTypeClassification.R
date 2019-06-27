@@ -19,7 +19,16 @@ classify_building_types <- function(buildings_path, pois_path, landuse_path,
   ktable <- read.csv2(ktable_path, stringsAsFactors = F) #TODO fix path
   
   ### add landuse tag to buildings
-  buildings_sp$landuse <- over(buildings_sp, ls_sp[3])$v
+  # buildings_sp$landuse <- over(buildings_sp, ls_sp[3])$v
+  # replace sp::over with sf::st_intersection since the former was crashing
+  # this is a quick fix, in the future might be better to replace all sp objects with sf
+  pacman::p_load("sf")
+  buildings_sp_sf <- st_as_sf(buildings_sp)
+  ls_sp_sf <- st_as_sf(ls_sp)
+  join <- st_join(buildings_sp_sf, ls_sp_sf[3], join = st_intersects)
+  buildings_sp_sf$landuse <- join[!duplicated(join$id),]$v
+  buildings_sp <- as_Spatial(buildings_sp_sf)
+  ls_sp <- as_Spatial(ls_sp_sf)
   
   ### check which buildings has a POI
   row.names(buildings_sp@data) <- seq(1,nrow(buildings_sp))

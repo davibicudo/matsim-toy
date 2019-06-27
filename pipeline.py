@@ -102,7 +102,7 @@ class Context:
                 pickle.dump(data, f)
 
     def stage(self, name, config_alternative = None):
-        if config_alternative is not None:
+        if config_alternative is not None and config_alternative in self.config:
             return self.config[config_alternative]
         if not name in self.stages:
             with open(self.stage_path(name), "rb") as f:

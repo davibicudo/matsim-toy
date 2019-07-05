@@ -5,6 +5,4 @@ country_name: switzerland
 sample_size: 0.1
 
 stages:
-    - population.prepare_osm: 
-        osm_path: "/Users/bicudo/git/matsim-toy/pipeline_bz/osm_data.osm"
     - matsim.run

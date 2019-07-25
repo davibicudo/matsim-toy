@@ -18,8 +18,8 @@ stages:
         k: 10                                          # k hyperparameter for kNN
         floor_height: 3.5                              # for estimating building heights
     - population.classify_buildings
-        max_resid_building_area: 3.5                   # for residential building classification
-        min_usable_building_area: 3.5                  
+        max_resid_building_area: 2000                  # for residential building classification
+        min_usable_building_area: 50                  
         residential_share_mixed_buildings: 0.5         
     - population.estimate_residents_workplaces:
         total_pop: NULL                                # in case manual input is desired

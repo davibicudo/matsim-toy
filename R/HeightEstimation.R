@@ -35,7 +35,7 @@ estimate_heights <- function(buildings_path, floor_height=3.5, k=10) {
   buildings_sp[is.na(buildings_sp$height),"height"] <- knn$pred
   
   cat("\nHeights estimation done. Writing to output.")
-  writeOGR(buildings_sp, "buildings.geopkg", "buildings", driver="GPKG")
+  writeOGR(buildings_sp, "buildings.gpkg", "buildings", driver="GPKG")
 
 }
 

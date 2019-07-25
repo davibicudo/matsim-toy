@@ -93,7 +93,7 @@ classify_building_types <- function(buildings_path, pois_path, landuse_path,
   
   cat("\nClassification and volume calculation done. Writing buildings to output.")
   
-  writeOGR(buildings_sp, "buildings.geopkg", "buildings", driver="GPKG")
+  writeOGR(buildings_sp, "buildings.gpkg", "buildings", driver="GPKG")
   
 }
 

@@ -140,7 +140,7 @@ estimate_residents_workplaces <- function(buildings_path, pt_stops_path,
   assertthat::are_equal(sum(buildings_sp$bd_wp, na.rm = T), employed_pop)
   
   cat("\nResidents and workplaces estimation done. Writing buildings to output.")
-  writeOGR(buildings_sp, "buildings.geopkg", "buildings", driver="GPKG")
+  writeOGR(buildings_sp, "buildings.gpkg", "buildings", driver="GPKG")
   
 }
 

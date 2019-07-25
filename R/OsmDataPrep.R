@@ -125,10 +125,10 @@ prepare_osm_data <- function(osm_path, city_name, country_name, sample_size=1.0,
   # All done  
   cat("\nOSM data preparation done. Writing to output.")
   
-  writeOGR(buildings_sp, "buildings.geopkg", "buildings", driver="GPKG")
-  writeOGR(poi_sp_buffer, "POIs.geopkg", "poi", driver="GPKG")
-  writeOGR(ls_sp, "landuse.geopkg", "landuse", driver="GPKG")
-  writeOGR(pt_sp, "pt_stops.geopkg", "stops", driver="GPKG")
+  writeOGR(buildings_sp, "buildings.gpkg", "buildings", driver="GPKG")
+  writeOGR(poi_sp_buffer, "POIs.gpkg", "poi", driver="GPKG")
+  writeOGR(ls_sp, "landuse.gpkg", "landuse", driver="GPKG")
+  writeOGR(pt_sp, "pt_stops.gpkg", "stops", driver="GPKG")
   
 }
 

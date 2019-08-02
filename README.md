@@ -1,3 +1,5 @@
+![Framework](doc/framework.jpeg)
+
 ## Installation
 
 Running the proposed framework requires Java (version 1.8), Maven (version 3), R (version 3.5) and Python (version 3.6), besides a number of R libraries and a few Python libraries. 
@@ -33,3 +35,6 @@ The configuration for running the different steps is stored in a yml file. The e
 
 The proposed framework’s intended use is mainly to create and run a toy MATSim scenario for any given city, but the steps implemented may be used in different ways and adapted to other needs. Most importantly, the scripts may be edited or replaced entirely in order to accommodate additional input data, still taking advantage of the other steps implemented and the pipeline’s chaining and caching capabilities.
 
+## Assumptions and methods 
+
+The detailed description can be found in the submitted [report](doc/Seminararbeit_Guggisberg_R1.pdf).

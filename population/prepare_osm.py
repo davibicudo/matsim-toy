@@ -28,7 +28,7 @@ def execute(context):
             args, 
             cwd=context.cache_path)
     
-    return ["%s/buildings.geopkg" % context.cache_path,
-            "%s/POIs.geopkg" % context.cache_path,
-            "%s/landuse.geopkg" % context.cache_path,
-            "%s/pt_stops.geopkg" % context.cache_path]
+    return ["%s/buildings.gpkg" % context.cache_path,
+            "%s/POIs.gpkg" % context.cache_path,
+            "%s/landuse.gpkg" % context.cache_path,
+            "%s/pt_stops.gpkg" % context.cache_path]

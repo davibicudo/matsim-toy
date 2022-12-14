@@ -17,4 +17,4 @@ def execute(context):
             args, 
             cwd=context.cache_path)
     
-    return ["%s/buildings.geopkg" % context.cache_path]
+    return ["%s/buildings.gpkg" % context.cache_path]

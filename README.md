@@ -2,28 +2,24 @@
 
 ## Installation
 
-Running the proposed framework requires Java (version 1.8), Maven (version 3), R (version 3.5) and Python (version 3.6), besides a number of R libraries and a few Python libraries. 
+Running the proposed framework requires Java 11 and Maven, besides a number of Python and R dependencies.
 
-A setup script is provided that handles the installation of all needed packages in a separate environment via Miniconda3. This script makes sure everything is in place before actually starting the modelling. To use it, simply run:
+The Python and R dependencies are managed with conda (or rather much faster, mamba), so simply run: 
+    
+    mamba env create -f environment.yml
 
-    source setup/setup.sh <target directory> <software to be installed>
-
-Where the first argument is the folder where the needed files will be downloaded and installed and the second argument is a comma-separated list of the software required (e.g. `java,maven,conda` for all options, without spaces). R, Python and all required libraries are installed with help of Miniconda3 in a separate environment (the target directory) which can later be deleted for a clean uninstall. 
-
-Alternatively, a manual installation is also possible. If the required software are available, it is only needed to install a few Python libraries (tqdm, pyyaml, pandas and requests) and pacman, a package manager for R which will handle later the installation of the remaining R libraries on-the-run.
+Note: there are many dependencies, and conda can be quite slow to install all of them, so mamba is suggested (`conda install mamba -n base`).
 
 ## Quick start
 
 1. Download (or clone) the GitHub repository.
-2. Run `source setup/setup.sh env_dir java,maven,conda`
-3. Run `source setup/activate.sh env_dir` (tests and activates the conda environment).
+2. `mamba env create -f environment.yml` (make sure mamba is available in the base environment of conda)
+3. `mamba activate matsim-toy` 
 4. Run `python run.py city_name country_name sample_size target_path`
 
 This will produce a MATSim toy model for *city_name* (part of *country_name*) with size population * *sample_size*, run it for 100 iterations and store everything in *target_path* (with default configuration). Default model creation configuration can be seen in the file `config_full.yml` and the default MATSim simulation configuration can be seen in `matsim/config.xml`.
 
 Alternatively, create a `config.yml` file (e.g. by editing the existing one or `config_full.yml`) and run it with `python run.py config_path`.
-
-If none of the required software or libraries were available, installing can take several minutes, depending on the speed of the internet connection. 
 
 Running the framework takes also some time, depending on the size of the scenario. The example provided is a 10% scenario for Luzern (Switzerland), a relatively small city with ~90’000 inhabitants, which takes about 11 minutes to build and 23 minutes to run 100 iterations in MATSim in a 16GB macOS i7.
 

@@ -1,0 +1,38 @@
+name: matsim-toy
+channels: 
+  - conda-forge
+dependencies:
+  - python=3.6
+  - tqdm==4.30.0
+  - pyyaml==3.13
+  - pandas==0.24.1
+  - requests==2.21.0
+  - r
+  - compiler-rt
+  - r-base
+  - r-httr
+  - r-rcpp
+  - r-rvest
+  - r-tibble
+  - r-digest
+  - r-igraph
+  - r-rcppparallel
+  - r-rgdal
+  - r-rgeos
+  - r-osmar
+  - r-fnn
+  - r-truncnorm
+  - r-optparse
+  - r-wikidatar
+  - r-wdi
+  - r-sp
+  - r-sf
+  - r-jsonlite
+  - r-isocodes
+  - r-data.table
+  - r-raster
+  - r-lubridate
+  - r-remotes
+  - r-devtools
+  - r-pacman
+  - r-osmdata

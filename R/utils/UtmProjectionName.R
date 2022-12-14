@@ -18,7 +18,7 @@ get_projection_name <- function(city_name, country_name) {
     p4s <- paste0("+proj=utm +zone=", zone_number, " +datum=WGS84 +units=m +no_defs")
   }
   
-  return(paste0("EPSG:", showEPSG(p4s)))
+  return(paste0("EPSG:", showEPSG(showSRID(p4s))))
 }
 
 pacman::p_load("optparse")

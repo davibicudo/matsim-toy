@@ -16,7 +16,7 @@ def execute(context):
     ], cwd = context.cache_path)
 
     sp.check_call([
-        "git", "checkout", "fb4e748" # commit id with solved Osm2TransitSchedule issues
+        "git", "checkout", "9f816e2"  # commit id with solved Osm2TransitSchedule issues
     ], cwd = "%s/pt2matsim" % context.cache_path)
 
     sp.check_call([
@@ -27,7 +27,7 @@ def execute(context):
         mvn, "package"
     ], cwd = "%s/pt2matsim" % context.cache_path)
 
-    jar = "%s/pt2matsim/target/pt2matsim-19.2-shaded.jar" % context.cache_path
+    jar = "%s/pt2matsim/target/pt2matsim-22.11-shaded.jar" % context.cache_path
     java(jar, "org.matsim.pt2matsim.run.CreateDefaultOsmConfig", ["test_config.xml"], cwd = context.cache_path)
 
     assert(os.path.exists("%s/test_config.xml" % context.cache_path))

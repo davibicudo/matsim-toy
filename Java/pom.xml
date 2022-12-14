@@ -7,30 +7,30 @@
 
   <repositories>
     <repository>
-         <id>matsim</id>
-         <url>http://dl.bintray.com/matsim/matsim</url>
+        <id>matsim</id>
+        <url>https://repo.matsim.org/repository/matsim</url>
     </repository>
     <repository>
-         <id>bintray-polettif-matsim</id>
-         <url>http://dl.bintray.com/polettif/matsim</url>
+        <id>osgeo</id>
+        <url>https://repo.osgeo.org/repository/release</url>
     </repository>
-    <repository>
-  	    <id>jitpack.io</id>
-  	    <url>https://jitpack.io</url>
-  	</repository>
   </repositories>
+
+  <properties>
+        <geotools.version>24.2</geotools.version>
+  </properties>
     
   <dependencies>
   	<dependency>
   		<groupId>org.matsim</groupId>
   		<artifactId>pt2matsim</artifactId>
-  		<version>19.2</version>
+  		<version>22.11</version>
   	</dependency>
   	<dependency>
-     	<groupId>com.github.SchweizerischeBundesbahnen</groupId>
-     	<artifactId>matsim-sbb-extensions</artifactId>
-    	<version>0.10.2</version>
-	 </dependency>
+        <groupId>org.matsim.contrib</groupId>
+        <artifactId>sbb-extensions</artifactId>
+        <version>14.0</version> 
+    </dependency>
   </dependencies>
   
   <build>

@@ -25,7 +25,7 @@ stages:
         total_pop: NULL                                # in case manual input is desired
         unemployment_rate: NULL                        
         demographics_path: NULL                        
-        raster_cell_size: 50                           # level of detail in estimation
+        raster_cell_size: 250                          # level of detail in estimation
         bus_stop_accessibility_buffer: 300             # bus accessibility range
         train_station_accessibility_buffer: 500        # train accessibility range 
         other_stops_accessibility_buffer: 400          # other pt accessibility range

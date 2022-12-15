@@ -26,5 +26,5 @@ option_list <- list(
 
 opt <- parse_args(OptionParser(option_list=option_list))
 
-get_unemployment_rate(gsub("(\")|(')","", opt$country_name))
+# get_unemployment_rate(gsub("(\")|(')","", opt$country_name))
 

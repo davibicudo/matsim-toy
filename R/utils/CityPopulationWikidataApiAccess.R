@@ -94,5 +94,5 @@ option_list <- list(
 
 opt <- parse_args(OptionParser(option_list=option_list))
 
-get_city_population(gsub("(\")|(')","", opt$city_name), gsub("(\")|(')","", opt$country_name))
+# get_city_population(gsub("(\")|(')","", opt$city_name), gsub("(\")|(')","", opt$country_name))
 

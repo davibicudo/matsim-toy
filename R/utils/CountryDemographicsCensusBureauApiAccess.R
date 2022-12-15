@@ -45,5 +45,5 @@ option_list <- list(
 
 opt <- parse_args(OptionParser(option_list=option_list))
 
-get_country_demographics(gsub("(\")|(')","", opt$country_name), opt$display)
+# get_country_demographics(gsub("(\")|(')","", opt$country_name), opt$display)
 

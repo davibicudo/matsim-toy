@@ -155,12 +155,18 @@ public class AddTimetableToOsmSchedule {
 	
 	static double getTeleportedTravelTime(Coord fromCoord, Coord toCoord, String mode) {
 		ModeRoutingParams mrp = config.plansCalcRoute().getModeRoutingParams().get(mode);
+		double beelineDistanceFactor;
+		double teleportedModeSpeed;
 		if (mrp == null || mrp.getTeleportedModeSpeed() == null) {
-			mrp = config.plansCalcRoute().getModeRoutingParams().get("undefined");
+			beelineDistanceFactor = 1.3;
+			teleportedModeSpeed = 50. / 3.6;
+		} else {
+			beelineDistanceFactor = mrp.getBeelineDistanceFactor();
+			teleportedModeSpeed = mrp.getTeleportedModeSpeed();
 		}
 		double dist = CoordUtils.calcEuclideanDistance(fromCoord, toCoord);
-		double estimatedNetworkDistance = dist * mrp.getBeelineDistanceFactor();
-		int travTime = (int) (estimatedNetworkDistance / mrp.getTeleportedModeSpeed());
+		double estimatedNetworkDistance = dist * beelineDistanceFactor;
+		int travTime = (int) (estimatedNetworkDistance / teleportedModeSpeed);
 		
 		return travTime;
 	}

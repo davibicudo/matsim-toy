@@ -1,10 +1,10 @@
 
-calc_travel_times <- function(buildings_path) {
+calc_travel_times <- function(buildings_path, osm_path) {
   
   # print variables used in function
   print(mget(setdiff(ls(), c("opt", "option_list", match.call()[[1]]))))
   
-  pacman::p_load("rgeos", "rgdal", "dodgr")
+  pacman::p_load("rgeos", "rgdal", "dodgr", "geodist", "osmdata")
   
   # load buildings dataset
   buildings_sp <- readOGR(dsn=buildings_path, "buildings")
@@ -32,9 +32,12 @@ calc_travel_times <- function(buildings_path) {
   wp$value <- wp$value/3600 # convert to km/s 
   
   # obtain graph (major component, weighted). Weighted distances are seconds to travel through link
-  roadnet <- dodgr_streetnet(pts = rbind(from,to), expand = 0.1) 
-  roadnet <- roadnet[roadnet$highway %in% wp$way,]
-  carnet <- weight_streetnet(roadnet, wt_profile = wp)
+  #roadnet <- dodgr_streetnet_long_timeout(bbox = bbox(bd), pts = rbind(from,to), expand = 0.1) 
+  #net <- osm_poly2line (osmdata_sf (doc = osm_path))
+  #roadnet <- net$osm_lines
+  #roadnet <- roadnet[roadnet$highway %in% wp$way,]
+  roadnet_sc <- osmdata_sf (doc = osm_path) # dodgr_streetnet_sc(pts = rbind(from,to), expand = 0.1)
+  carnet <- weight_streetnet(roadnet_sc, wt_profile = wp)
   carnet <- carnet [which (carnet$component == 1), ]
   
   # get OSM nearest nodes for buildings
@@ -45,13 +48,13 @@ calc_travel_times <- function(buildings_path) {
   nearest_nodes <- vert_map[c(from_index$index, to_index$index),"vert"]
   
   # contract graph to speed up calculations
-  carnet_simplified <- dodgr_contract_graph(carnet, nearest_nodes)$graph
+  carnet_simplified <- dodgr_contract_graph(carnet, nearest_nodes)
   
   # calculate distances matrix (some tricks for the library to return seconds rather than dist as output)
-  colnames(carnet_simplified)[colnames(carnet_simplified) == 'd_weighted'] <- 'dist'
-  colnames(carnet_simplified)[colnames(carnet_simplified) == 'd'] <- 'meter_dist'
-  carnet_simplified[,c("geom_num","highway", "way_id")] <- NULL 
-  od_ttime <- dodgr_dists(carnet_simplified, from = from, to = to)
+  #colnames(carnet_simplified)[colnames(carnet_simplified) == 'd_weighted'] <- 'dist'
+  #colnames(carnet_simplified)[colnames(carnet_simplified) == 'd'] <- 'meter_dist'
+  # carnet_simplified[,c("geom_num","highway", "way_id")] <- NULL 
+  od_ttime <- dodgr_times(carnet_simplified, from = from, to = to, parallel = TRUE)
   
   # replace NAs with a large value and 0's with a small value for further calculations
   od_ttime[is.na(od_ttime)] <- 3600000
@@ -64,9 +67,9 @@ calc_travel_times <- function(buildings_path) {
 pacman::p_load("optparse")
 
 option_list <- list(
-  make_option("--buildings_path")
+  make_option("--buildings_path", "--osm_path")
 )
 
 opt <- parse_args(OptionParser(option_list=option_list))
 
-calc_travel_times(opt$buildings_path)
+calc_travel_times(opt$buildings_path, opt$osm_path)

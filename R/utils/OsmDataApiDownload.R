@@ -8,12 +8,12 @@ get_osm_data <- function(city_name, country_name) {
   # load needed libraries
   pacman::p_load("osmdata")
   
-  # get bounding box for city and apply 5% expansion factor
+  # get bounding box for city
   bbox <- getbb(place_name=paste0(city_name, ", ", country_name), featuretype = "city", limit = 1)
-  bbox [1, ] <- bbox [1, ] + c (-0.05, 0.05) * diff (bbox [1, ])
-  bbox [2, ] <- bbox [2, ] + c (-0.05, 0.05) * diff (bbox [2, ])
+  #bbox [1, ] <- bbox [1, ] + c (-0.05, 0.05) * diff (bbox [1, ])
+  #bbox [2, ] <- bbox [2, ] + c (-0.05, 0.05) * diff (bbox [2, ])
   
-  osm_query <- opq(bbox, timeout = 100, memsize = 1e9) %>%
+  osm_query <- opq(bbox, timeout = 6000, memsize = 1e9) %>%
     add_osm_feature("highway")
   osm_query$suffix <- gsub(">;", "<;>;", osm_query$suffix) # up and down OSM member recursion
   osm_query$features <- ""

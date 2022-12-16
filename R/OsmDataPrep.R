@@ -28,7 +28,10 @@ prepare_osm_data <- function(osm_path, city_name, country_name, sample_size=1.0,
   borders <- getbb(place_name=paste(city_name, country_name, sep=","), format_out="sf_polygon", limit=1, featuretype="city")
   nodes <- bd$nodes$attrs[, c("id","lat","lon")]
   nodes <- st_as_sf(nodes, coords=c("lon","lat"), crs="+proj=longlat +datum=WGS84")
-  nodes_i <- st_intersection(nodes, borders$multipolygon)
+  if (class(borders) == "list") {
+    borders <- borders$multipolygon
+  }
+  nodes_i <- st_intersection(nodes, borders)
   if (nrow(nodes_i)==0) {
     message(paste0("Border found for ", city_name, ", ", country_name, " does not overlap with OSM data. 
                    Original bounding box shall be kept and this might lead to city population and 

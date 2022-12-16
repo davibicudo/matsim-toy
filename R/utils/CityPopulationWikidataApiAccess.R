@@ -30,6 +30,8 @@ get_city_population <- function(city_name, country_name) {
       ". Trying with city name only ('", city_name, "')"))
     city_q <- find_item(city_name)
     city <- find_city(city_q, city_name, country)
+  } else {
+    city <- find_city(city_q, city_name, country)
   }
   
   pop_values <- city$claims[["P1082"]]$mainsnak$datavalue$value$amount
@@ -94,5 +96,5 @@ option_list <- list(
 
 opt <- parse_args(OptionParser(option_list=option_list))
 
-# get_city_population(gsub("(\")|(')","", opt$city_name), gsub("(\")|(')","", opt$country_name))
+get_city_population(gsub("(\")|(')","", opt$city_name), gsub("(\")|(')","", opt$country_name))
 
